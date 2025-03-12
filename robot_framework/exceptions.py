@@ -48,7 +48,7 @@ def handle_error(message: str, error_count: str | None, error: Exception, queue_
             service_now_api_username = orchestrator_connection.get_credential(config.SERVICE_NOW_API_PROD_USER).username
             service_now_api_password = orchestrator_connection.get_credential(config.SERVICE_NOW_API_PROD_USER).password
 
-            service_now_handler.post_incident(service_now_api_username, service_now_api_password, error_dict)
+            service_now_handler.post_incident(orchestrator_connection, service_now_api_username, service_now_api_password, error_dict)
 
             orchestrator_connection.log_trace("ServiceNow incident created.")
 
