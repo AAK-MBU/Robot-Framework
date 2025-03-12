@@ -23,7 +23,7 @@ def post_incident(service_now_api_username, service_now_api_password, error_dict
 
     incident_data = {
         "correlationId": "test",  # How do we handle requirement for unique correlationId?
-        "contactType": "integation",
+        "contactType": "integation",  # Should always be 'integration' - this just means the incident was created using the ServiceNow API
         "shortDescription": f"Error type: {error_type}, Error message: {error_message}, Error count: {error_count}",
         "description": F"Full error trace message: {error_trace}",
         "caller": "SYS_ID FOR INCIDENT CREATER ROBOT/USER",  # Incident Creator Caller - create new user?
