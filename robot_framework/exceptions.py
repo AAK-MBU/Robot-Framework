@@ -44,7 +44,7 @@ def handle_error(message: str, error_count: str | None, error: Exception, queue_
     orchestrator_connection.log_error(error_msg)
     if queue_element:
         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.FAILED, error_msg)
-    if error != BusinessError:    
+    if error != BusinessError:
         error_screenshot.send_error_screenshot(error_email, error, orchestrator_connection.process_name)
 
     if message == "ApplicationException" and error_count == config.MAX_RETRY_COUNT:
