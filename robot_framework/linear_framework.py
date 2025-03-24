@@ -12,6 +12,7 @@ from robot_framework import reset
 from robot_framework.exceptions import BusinessError, handle_error, log_exception
 from robot_framework import process
 from robot_framework import config
+from robot_framework import finalize
 
 
 def main():
@@ -46,3 +47,5 @@ def main():
 
     if config.FAIL_ROBOT_ON_TOO_MANY_ERRORS and error_count == config.MAX_RETRY_COUNT:
         raise RuntimeError("Process failed too many times.")
+
+    finalize.finalize(orchestrator_connection)
