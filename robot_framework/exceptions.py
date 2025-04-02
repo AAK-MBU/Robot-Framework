@@ -34,12 +34,18 @@ def handle_error(message: str, error_count: str | None, error: Exception, queue_
         "trace": traceback.format_exc()
     }
     error_msg = json.dumps(error_dict, ensure_ascii=False)
+    error_msg = (
+        f"{error_msg[:500]}  [...] {error_msg[-490:]}"
+        if len(error_msg) > 1000
+        else error_msg
+    )  # Shorten error msg such that it can be sent to SQL database
     error_email = orchestrator_connection.get_constant(config.ERROR_EMAIL).value
 
     orchestrator_connection.log_error(error_msg)
     if queue_element:
         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.FAILED, error_msg)
-    error_screenshot.send_error_screenshot(error_email, error, orchestrator_connection.process_name)
+    if error != BusinessError:
+        error_screenshot.send_error_screenshot(error_email, error, orchestrator_connection.process_name)
 
     if message == "ApplicationException" and error_count == config.MAX_RETRY_COUNT:
         try:
